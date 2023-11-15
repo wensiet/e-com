@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mongodb:
+    build:
+      context: .
+      dockerfile: Dockerfile.mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    deploy:
+      resources:
+        limits:
+          memory: '512M'
+          cpus: '0.5'
+
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    depends_on:
+      - mongodb
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        limits:
+          memory: '512M'
+          cpus: '0.5'
